@@ -1,0 +1,84 @@
+<html>
+<head>
+ <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+
+<script>
+  var socket = io.connect(window.location.origin);
+</script>
+</head>
+<body>
+<button id="choose">choose</button>
+<button id="packager">pack</button>
+<button id="show_list">Show List</button>
+<button id="git">Git action</button>
+<button id="email">email</button><br/>
+<input type="text" placeholder="master" id="branch"/>
+<input type="text" placeholder="version:1.3.0" id="version"/>
+<input type="text" placeholder="comments" id="comments"/>
+<br/>
+<div style="background:#000;color:#FFF;font-weight:bold;float:left;height:400px;">
+<div id="show" style="float:left;width:600px;height:400px;overflow-y:scroll;"></div>
+<div id="status" style="float:left;width:200px;height:400px;text-align:center;border-right:1px solid #FFF;height:400px;"></div>
+<div id="email" style="float:left;width:200px;height:400px;padding-left:20px">
+</div>
+</body>
+<script>
+  document.getElementById('choose').onclick = function(){
+    socket.emit('choose', { my: 'data1' });
+  }
+  document.getElementById('packager').onclick = function(){
+    this.disabled="disabled";
+    document.getElementById('show').innerHTML = '';
+    document.getElementById('status').innerHTML = '<p>command packager excuting!</p>'; 
+    socket.emit('packager', { my: 'data2' });
+  }
+  document.getElementById('show_list').onclick = function(){
+    document.getElementById('status').innerHTML = '<p>command excuting!</p>'; 
+    socket.emit('show', {});
+  }
+  socket.on('action', function(data){
+    document.getElementById('show').innerHTML = document.getElementById('show').innerHTML + '<p>' + data.event + '</p>'; 
+  })
+  socket.on('show_result', function(data){
+    document.getElementById('show').innerHTML =  '<p>' + beatify(data.result) + '</p>'; 
+  })
+  socket.on('exit_info', function(data){
+    document.getElementById('status').innerHTML = '<p>command excute over!</p>'; 
+  });
+  socket.on('show_result_lasting', function(data){
+    document.getElementById('show').innerHTML = document.getElementById('show').innerHTML +   '<p>' + (data.result) + '</p>'; 
+  })
+  socket.on('file_list', function(data){
+    var list = data.result;
+    var htmlArr = [];
+    for(i=0;i<list.length;i++){
+      if(list[i].indexOf('.tgz')>-1){
+        htmlArr.push('<p><label><input type="radio" name="filelist" value="');
+        htmlArr.push(list[i]);
+        htmlArr.push('"/>');
+        htmlArr.push(list[i]);
+        htmlArr.push('</label></p>');
+      }
+    }
+    document.getElementById('show').innerHTML = htmlArr.join('');
+  })
+  function beatify(data){
+    return data.replace(/\n/g, "<br />");
+  }
+  function initMail(){
+    
+  }
+  $('#git').click(function(){
+    if($.trim($('#branch').val())!=''){
+       socket.emit('git_update',{'data':$.trim('#branch').val()});
+    }else{
+
+       socket.emit('git_update',{'data' : 'master'});
+    }
+  })
+  socket.on('git_renew', function(data){
+    $('#show').append(beatify(data.result));
+  });
+</script>
+</html>

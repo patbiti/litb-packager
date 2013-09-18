@@ -1,0 +1,63 @@
+<html>
+<head>
+ <script type="text/javascript" src="/socket.io/socket.io.js" />
+<script>
+  // var socket = new io.Socket("localhost", { port: 9527 });
+  // socket.connect();
+  // // var socket = io.connect('http://localhost');
+  // socket.on('news', function (data) {
+  //   console.log(data);
+  //   socket.emit('my other event', { my: 'data' });
+  // });
+</script>
+<script>
+  var socket = io.connect('http://localhost:9527');
+  socket.on('news', function (data) {
+    console.log(data);
+    // socket.emit('my other event', { my: 'data' });
+  });
+</script>
+</head>
+<body>
+<button id="test1">test1</button>
+<button id="test2">test2</button>
+<button id="packager">pack</button>
+<button id="show_list">Show List</button>
+<br/>
+<div style="background:#000;color:#FFF;font-weight:bold;">
+<div id="show" style="background:#000;float:left;width:600px"></div>
+<div id="status" style="background:#000;float:left;width:200px"></div>
+</div>
+</body>
+<script>
+  document.getElementById('test1').onclick = function(){
+    socket.emit('my other event', { my: 'data1' });
+  }
+  document.getElementById('packager').onclick = function(){
+    this.disabled="disabled";
+    document.getElementById('show').innerHTML = '';
+    document.getElementById('status').innerHTML = '<p>command packager excuting!</p>'; 
+    socket.emit('packager', { my: 'data2' });
+  }
+  document.getElementById('show_list').onclick = function(){
+    document.getElementById('status').innerHTML = '<p>command excuting!</p>'; 
+    socket.emit('show', {});
+  }
+  socket.on('action', function(data){
+    document.getElementById('show').innerHTML = document.getElementById('show').innerHTML + '<p>' + data.event + '</p>'; 
+  })
+  socket.on('show_result', function(data){
+    document.getElementById('show').innerHTML =  '<p>' + beatify(data.result) + '</p>'; 
+  })
+  socket.on('exit_info', function(data){
+    document.getElementById('status').innerHTML = '<p>command excute over!</p>'; 
+  });
+  socket.on('show_result_lasting', function(data){
+    document.getElementById('show').innerHTML = document.getElementById('show').innerHTML +   '<p>' + (data.result) + '</p>'; 
+  })
+  
+  function beatify(data){
+    return data.replace(/\n/g, "<br />");
+  }
+</script>
+</html>

@@ -1,0 +1,1 @@
+var readConfig = require('./util/readConfig.js');
