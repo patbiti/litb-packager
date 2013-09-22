@@ -28,12 +28,3 @@ var sendmail = function(options){
 module.exports = {
 	'sendMail' : sendmail
 };
-//test case
-var mailOptions = {
-    from: "litb-packager✔ <litb.ria@gmail.com>", // sender address
-    to: "wenhuajian@lightinthebox.com", // list of receivers
-    subject: "Hello ✔", // Subject line
-    text: "Hello world ✔", // plaintext body
-    html: "<b>Hello world1 ✔</b>" // html body
-}
-sendmail(mailOptions);
