@@ -1,0 +1,26 @@
+{
+	"name" : "litb-packager",
+	"main" : "./index.js",
+	"bin"  : { "ria-packager": "./bin/ria-packager" },
+	"description" : "litb packager tools",
+	"author" : {
+		"name" : "wenhuajian",
+		"email" : "pat.biti@gmail.com",
+		"url" : "http://weibo.com/patbiti"
+	},
+	"contributors" : [{
+		"name" : "dongyuwei",
+		"email" : "dongyuwei@lightinthebox.com"
+	}],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/patbiti/litb-packager.git"
+	},
+	"version" : "0.0.1",
+	"dependencies" : {
+		"socket.io" : "0.9.16",
+		"argsparser" : "0.0.6",
+		"nodemailer"  : "0.5.2",
+		"express" : "3.4.0"
+	}
+}
