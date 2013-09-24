@@ -1,3 +1,6 @@
-cd /data/git/packager/ria.lightsource
+cd $1
+git status
 git pull
-git checkout $1
+git checkout $2
+git pull
+git status

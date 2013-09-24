@@ -3,7 +3,7 @@ var fs = require('fs');
 var readConfig = function(filePath){
 	var jsonConfig = {};
 	if(fs.existsSync(filePath)){
-		jsonConfig = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+		jsonConfig = eval('(' + fs.readFileSync(filePath, 'utf-8') + ')') ;
 	}
 	return jsonConfig; 
 }

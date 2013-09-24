@@ -1,5 +1,6 @@
 {
 	"packager-dir" : "/data/git/git.tags/",
-	"git-dir" : "/data/git/packager/ria.lightsource",
-	"download-dir" : "/data/git/git.tags/"
+	"git-dir" : "/data/git/ria.lightsource.test",
+	// "download-dir" : "/data/git/git.tags/"
+	"download-dir" : "/data/git/tmp/"
 }
