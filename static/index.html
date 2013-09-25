@@ -53,17 +53,40 @@
   </header>
   <div class="container">
     <ul class="nav nav-tabs">
-      <li class="active"><a id="switch" href="#">git switch</a></li>
-      
+     
+      <li><a  node-type="packager" href="#packager">packager</a></li>
+       <li class="active"><a node-type="switch" href="#switch">git switch</a></li>
     </ul>
-    <div class="switch">
+    <div class="switch inputzone">
       <p class="text-info">swith the git for ui-test or cc</p>
       <form class="form-search">
         <input type="text" class="input-medium search-query" placeholder="master" name="branch" />
         <button type="button" class="btn">switch</button>
       </form>
     </div>
-   
+    <div class="packager inputzone">
+      <p class="text-info">packger</p>
+      <label class="radio">
+        <input type="radio" name="packtype" value="1" checked>
+       test 
+      </label>
+      <label class="radio">
+        <input type="radio" name="packtype" value="2">
+        online
+      </label>
+      <label class="radio">
+        <input type="radio" name="packtype" value="3">
+        newest master packager
+      </label>
+      <form class="form-inline">
+        <input type="text" class="input-small" placeholder="master" name="branch" isMust="must" />
+        <input type="text" class="input-small" placeholder="packagerno" isMust="must" name="packagerno" />
+        <input type="text" class="input-small" placeholder="comments" name="comments" style="display:none"/>
+        <button type="button" class="btn">packager</button>
+        <br/>
+        <p node-type="show-comments"></p>
+      </form>
+    </div>
   </div>
   <div class="container">
     <div style="height:400px;">
@@ -77,6 +100,16 @@
 
 
   <script>
+    var init = function(){
+      var key = window.location.hash == '' ? 'packager':window.location.hash.split('#')[1];
+      showTab(key);
+    }
+    var showTab = function(key){
+      $('.inputzone').hide();
+      $('.' + key).show();
+      $('.nav-tabs li').removeClass('active');
+      $('[node-type="' + key+'"]').parent().addClass('active');
+    }
     var runningInterval;
     var statusRuning = {
       timer : null,
@@ -90,20 +123,69 @@
         $('#status').html('');
       }
     }
-  //switch branch
-    var switchZone = $('.switch');
-    switchZone.find('button').click(function(){
-      $(this).attr('disabled', true);
+    var updateContent = function(content){
+      $('#show').append(content);
+      $('#show').scrollTop($('#show')[0].scrollHeight);
+    }
+    var startCommand = function(obj){
+      obj.attr('disabled', true);
       $('#show').html('');
       var info = '<p>command excuting</p>';
       $('#status_info').html(info);
       statusRuning.start();
+    }
+
+    var checkMust = function(obj){
+      var inputs = obj.find('input[isMust="must"]');
+      if(inputs.length ===0){
+        return true;
+      }
+      for(var i=0;i<inputs.length;i++){
+        if($.trim(inputs.eq(i).val())==''){
+          inputs.eq(i).focus();
+          return false;
+        }
+      }
+      return true;
+    }
+  //switch branch
+    var switchZone = $('.switch');
+    switchZone.find('button').click(function(){
+      startCommand($(this));
       var inputVal = $.trim(switchZone.find('input').val()) == '' ? 'master' : $.trim(switchZone.find('input').val());
       socket.emit('git_update',{'data':inputVal});
     });
 
    //commont  on
+   var packZone = $('.packager');
+   packZone.find('button').click(function(){
+    if(!checkMust(packZone)){
+      return false;
+    }
+    startCommand($(this));
+    var data = {};
+    data['type'] = packZone.find('input[name="packtype"]:checked').val();
+    data['branch'] = $.trim(packZone.find('[name="branch"]').val());
+    data['packagerno'] = $.trim(packZone.find('[name="packagerno"]').val());
+    socket.emit('packager', data)
+   });
 
+   packZone.find('input[type="radio"]').click(function(){
+      var type = $(this).val();
+      if(type==1){
+        packZone.find('[name="branch"]').show().attr('readonly',false).val('');
+        packZone.find('[name="packagerno"]').show().attr('readonly',false).val('');
+        packZone.find('[name="comments"]').hide().val('').removeAttr('isMust');
+      }else if(type=="2"){
+        packZone.find('[name="branch"]').show().val('master').attr('readonly',true);
+        packZone.find('[name="packagerno"]').show().attr('readonly',false).val('');
+        packZone.find('[name="comments"]').show().attr('isMust','must');
+      }else{
+        packZone.find('[name="branch"]').show().val('master').attr('readonly',true);
+        packZone.find('[name="packagerno"]').show().attr('readonly',true).val('latest');
+        packZone.find('[name="comments"]').hide().val('').attr('isMust','must');
+      }
+   });
     socket.on('exit_info', function(data){
       $('button').attr('disabled', false);
       statusRuning.stop();
@@ -114,19 +196,21 @@
 
     //1
     socket.on('git_renew', function(data){
-      $('#show').append(beatify(data.result));
-      $('#show').scrollTop($('#show')[0].scrollHeight);
+      updateContent(data.result);
     });
+  //init
 
+    init();
+    $('.nav-tabs a').click(function(){
+      showTab($(this).attr('node-type'));
+    })
   </script>
 
 
 
 
 <!--test-->
-<div>
-  <a href="#" id="switch"></a>
-</div>
+
 <br/>
 <div class="showzone switch">
   <h1>swith the git for ui-test or cc</h1>
@@ -134,7 +218,7 @@
   <input type="text" placeholder="master" id="branch"/>
 </div>
 <button id="choose">choose</button>
-<button id="packager">pack</button>
+<!-- <button id="packager">pack</button> -->
 <button id="show_list">Show List</button>
 
 <button id="email">email</button><br/>
@@ -145,19 +229,19 @@
 
 </body>
 <script>
-  document.getElementById('choose').onclick = function(){
-    socket.emit('choose', { my: 'data1' });
-  }
-  document.getElementById('packager').onclick = function(){
-    this.disabled="disabled";
-    document.getElementById('show').innerHTML = '';
-    document.getElementById('status').innerHTML = '<p>command packager excuting!</p>'; 
-    socket.emit('packager', { my: 'data2' });
-  }
-  document.getElementById('show_list').onclick = function(){
-    document.getElementById('status').innerHTML = '<p>command excuting!</p>'; 
-    socket.emit('show', {});
-  }
+  // document.getElementById('choose').onclick = function(){
+  //   socket.emit('choose', { my: 'data1' });
+  // }
+  // document.getElementById('packager').onclick = function(){
+  //   this.disabled="disabled";
+  //   document.getElementById('show').innerHTML = '';
+  //   document.getElementById('status').innerHTML = '<p>command packager excuting!</p>'; 
+  //   socket.emit('packager', { my: 'data2' });
+  // }
+  // document.getElementById('show_list').onclick = function(){
+  //   document.getElementById('status').innerHTML = '<p>command excuting!</p>'; 
+  //   socket.emit('show', {});
+  // }
   socket.on('action', function(data){
     document.getElementById('show').innerHTML = document.getElementById('show').innerHTML + '<p>' + data.event + '</p>'; 
   })

@@ -29,11 +29,12 @@ io.sockets.on('connection', function (socket) {
   }
 
   socket.on('packager', function(data){
-    var actionType = 'packager ' + data.comments || '';
-    last = exec('sh ~/sh/test1.sh');
+    var actionType = 'git action: '+ data.type || '';
+    var command = 'sh ' + __dirname + '/batch/packager.sh ' + data.branch + ' ' + data.packagerno + ' ' + '' || data.comments;
+    last = exec('sh ');
     
     last.stdout.on('data', function (data) {
-        socket.emit('show_result_lasting',{'result': data})
+        socket.emit('packager_result',{'result': data})
     });
 
     last.on('exit', function (code) {
