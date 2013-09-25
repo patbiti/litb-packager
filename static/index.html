@@ -48,43 +48,45 @@
       <div class="page-header">
         <h1>litb-riapackger system</h1>
       </div>
-      <p>Bootstrap makes use of certain HTML elements and CSS properties that require the use of the HTML5 doctype. Include it at the beginning of all your projects.</p>
+      <p>打包系统</p>
     </div>
   </header>
   <div class="container">
     <ul class="nav nav-tabs">
      
-      <li><a  node-type="packager" href="#packager">packager</a></li>
-       <li class="active"><a node-type="switch" href="#switch">git switch</a></li>
+      <li><a  node-type="packager" href="#packager">打包</a></li>
+       <li class="active"><a node-type="switch" href="#switch">切换分支</a></li>
     </ul>
     <div class="switch inputzone">
-      <p class="text-info">swith the git for ui-test or cc</p>
+      <p class="text-info">用于UI测试的分支切换和更新【定时任务2分钟更新一次。】。http://fe.tbox.me:8888/ria.lightsource</p>
       <form class="form-search">
         <input type="text" class="input-medium search-query" placeholder="master" name="branch" />
-        <button type="button" class="btn">switch</button>
+        <button type="button" class="btn">切换</button>
       </form>
     </div>
     <div class="packager inputzone">
-      <p class="text-info">packger</p>
+      <p class="text-info">打包</p>
       <label class="radio">
         <input type="radio" name="packtype" value="1" checked>
-       test 
+       测试打包使用该选项【需要输入分支名，包名】
       </label>
       <label class="radio">
         <input type="radio" name="packtype" value="2">
-        online
+        上线打包暂时使用该选项，上线前请合并主干，从master打包，comments必填。
       </label>
       <label class="radio">
         <input type="radio" name="packtype" value="3">
-        newest master packager
+        给测试的同学提供最新的master包名称。
       </label>
       <form class="form-inline">
         <input type="text" class="input-small" placeholder="master" name="branch" isMust="must" />
-        <input type="text" class="input-small" placeholder="packagerno" isMust="must" name="packagerno" />
-        <input type="text" class="input-small" placeholder="comments" name="comments" style="display:none"/>
+        <input type="text" class="input-small" placeholder="版本号，如：1.3.2.1" isMust="must" name="packagerno" />
+        <input type="text" class="input-small" placeholder="注释" name="comments" style="display:none"/>
         <button type="button" class="btn">packager</button>
         <br/>
         <p node-type="show-comments"></p>
+        <p>邮件内容</p>
+        <button type="button" class="btn">发送邮件</button>
       </form>
     </div>
   </div>
