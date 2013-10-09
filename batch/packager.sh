@@ -1,12 +1,4 @@
 echo 'PI packager sh: git from branch' $src 'to tag:'$tagName
-
-
-
-
-
-
-
-
 #1.进入到工作目录
 cd /home/wenhuajian/code/ria.lightsource
 #2.代码更新操作。

@@ -1,8 +1,7 @@
 {
-	"packager-dir" : "/data/git/git.tags/",
+	"packager-dir" : "/home/wenhuajian/code/ria.lightsource/",
 	"git-dir" : "/data/git/ria.lightsource.test",
-	"download-dir" : "/data/git/tmp/",
+	"download-dir" : "/data/ria/git.tags/",
 	"request-url" : "http://192.168.66.125:8888/git.tags/",
-
 	"download-dir1" : "/data/git/tmp/"
 }
