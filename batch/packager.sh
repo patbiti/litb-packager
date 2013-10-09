@@ -1,3 +1,4 @@
+src=$1;tags=$2;now=`date +%Y%m%d%H%M`;tagName=lightsource_${tags}_$now;tag=$3;
 echo 'PI packager sh: git from branch' $src 'to tag:'$tagName
 #1.进入到工作目录
 cd /home/wenhuajian/code/ria.lightsource
@@ -53,6 +54,7 @@ git tag online-$tags
 echo 'time:' $now ' src:' $src ' tags:' $tag >> online.tgz
 else
 fi
+echo $tagName
 
 
 
