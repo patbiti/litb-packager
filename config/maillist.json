@@ -1,4 +1,13 @@
 {
-	"test" : "wenhuajian@lightinthebox.com",
-	"pm" : "pm@lightinthebox.com"
+	"contacts":[
+		{
+			"name":"test",
+			"value":"wenhuajian@lightinthebox.com"
+		},
+		{
+			"name":"pm",
+			"value":"litb.ria@gmail.com"
+		}
+	],
+	"template" : "<h3>Hi，all</h3><h4>{{version}}已经CC{{#isQA}}，请QA启动版本测试{{/isQA}}{{#isUI}}，请孙璐启动UI测试{{/isUI}}。</h4><p>url: {{url}}/{{tagname}}</p><p>tgz路径: {{url}}/{{tagname}}.tgz</p><p>git版本号{{gitversion}}<br/><br/><p>测试级别:{{testlevel}}</p>{{#isQA}}<p>功能测试：需要</p>{{/isQA}}{{#isUI}}<p>UI测试：需要</p>{{/isUI}}<p>上线:{{operator}}</p>"
 }

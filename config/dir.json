@@ -1,6 +1,8 @@
 {
 	"packager-dir" : "/data/git/git.tags/",
 	"git-dir" : "/data/git/ria.lightsource.test",
-	// "download-dir" : "/data/git/git.tags/"
-	"download-dir" : "/data/git/tmp/"
+	"download-dir" : "/data/git/tmp/",
+	"request-url" : "http://192.168.66.125:8888/git.tags/",
+
+	"download-dir1" : "/data/git/tmp/"
 }
