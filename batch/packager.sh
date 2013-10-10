@@ -27,12 +27,12 @@ if [[ "${packagertime/$str_Time/}" != "$packagertime" ]]
 	echo packagertime
 	else
 	echo 'failed'
-	rm /data/ria/git.tags/$tagName 
+	rm /data/ria/git.tags/$tagName -rf
 	exit 2
 fi
 #5.执行图片压缩脚本。
 #5.1 图片压缩信息输出到日志文件里。
-
+node /home/wenhuajian/code/ria-packager/lib/tools/compressImg.js /data/ria/git.tags/$tagName/img/ >> /data/ria/git.tags/$tagName-log.txt
 #6 输出日志文件到tags里。
 echo $tags > tags.txt
 cd ..
