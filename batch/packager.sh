@@ -38,7 +38,7 @@ echo $tags > tags.txt
 cd ..
 #7 打包文件
 #7.1打包压缩包。
-tar cfvz $tagName.tgz $tagName
+tar cfvz $tagName.tgz $tagName >> /data/ria/git.tags/$tagName-log.txt
 #7.2 输出到指定目录
 cp $tagName.tgz ../tags/
 #7.3 【仅上线包使用】版本记录管理
