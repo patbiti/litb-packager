@@ -43,18 +43,20 @@ tar cfvz $tagName.tgz $tagName
 cp $tagName.tgz ../tags/
 #7.3 【仅上线包使用】版本记录管理
 if [ -z "$tag" ]
-then
-#7.3 【仅上线包使用】版本记录管理
-#7.3.1 将最新包替换成本次打包的文件。
-rm online-packager.tgz
-cp $tagName.tgz online-packager
-#7.3.2 git tag本次打包的内容。
-git tag online-$tags
-#7.3.3 git tag 本次打包的注释内容。
-echo 'time:' $now ' src:' $src ' tags:' $tag >> online.tgz
+	then
+	#7.3 【仅上线包使用】版本记录管理
+	#7.3.1 将最新包替换成本次打包的文件。
+	rm online-packager.tgz
+	cp $tagName.tgz online-packager
+	#7.3.2 git tag本次打包的内容。
+	git tag online-$tags
+	#7.3.3 git tag 本次打包的注释内容。
+	echo 'time:' $now ' src:' $src ' tags:' $tag >> online.txt
+	echo $tagName
 else
+	echo $tagName
 fi
-echo $tagName
+
 
 
 
