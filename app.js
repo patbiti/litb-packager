@@ -118,3 +118,11 @@ io.sockets.on('connection', function (socket) {
     socket.emit('file_list',{'result': existFile});
   });
 });
+
+
+//add file watcher
+fs.watch(__dirname  + '/config/', function (event, filename) {
+  dirConfig = readConfig(__dirname  + '/config/dir.json');
+  mailConfig = readConfig(__dirname + '/config/maillist.json');
+  console.log(dirConfig,mailConfig);
+});
