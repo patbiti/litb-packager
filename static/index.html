@@ -904,9 +904,9 @@
         console.log(arr[arr.length-2])
         $('#inputUrl').val(arr[arr.length-2]);
         if(arr[arr.length-2] =='failed'){
-          if(confirm('error,refresh')){
+          if(confirm('打包错误，请刷新页面后重试。')){
             window.location.reload(true);
-          }
+          } 
         }
       }else{
         $('#inputUrl').val($('#show').find('input:checked').val());
