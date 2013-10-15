@@ -99,8 +99,8 @@ io.sockets.on('connection', function (socket) {
     var filepath = dirConfig['download-dir'] + data.tagname + '.tgz';
     var md5Cb = function(md5){
       var actionType = 'send email';
-      data.isQA = data.testtype.indexOf('功能测试')>-1 ? true : false;
-      data.isUI = data.testtype.indexOf('UI测试')>-1 ? true : false;
+      data.isQA = data.testtype && data.testtype.indexOf('功能测试')>-1 ? true : false;
+      data.isUI = data.testtype && data.testtype.indexOf('UI测试')>-1 ? true : false;
       data.url = dirConfig['request-url'];
       data.tagname = data.tagname;
       data.md5 = md5;
