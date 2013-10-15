@@ -1,7 +1,9 @@
 {
 	"name" : "litb-packager",
 	"main" : "./index.js",
-	"bin"  : { "ria-packager": "./bin/ria-packager" },
+	"bin"  : { 
+		"ria-packager": "./bin/ria-packager" 
+	},
 	"description" : "litb packager tools",
 	"author" : {
 		"name" : "wenhuajian",

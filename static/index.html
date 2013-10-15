@@ -665,7 +665,7 @@
         </label>
         <form class="form-inline">
           <input type="text" class="input-small" placeholder="master" name="branch" isMust="must" />
-          <input type="text" class="input-small" placeholder="版本号，如：1.3.2.1" isMust="must" name="packagerno" />
+          <input type="text" class="input-small" placeholder="1.3.2.1" isCondition="/(\d+)\.(\d+)\.(\d+)\.(\d+)/" isMust="must" name="packagerno" />
           <input type="text" class="input-small" placeholder="注释" name="comments" style="display:none"/>
           <button type="button" class="btn">packager</button>
           <br/>
@@ -784,6 +784,9 @@
       var info = '<p>' + data.result  + '</p>';
       info = info + '<p>command ' + data.actionType  + 'excute over</p>';
       $('#status_info').html(info);
+      if(data.alert){
+        alert(data.actionType);
+      }
     });
 
     //1
@@ -819,9 +822,9 @@
     var initEmail = function(data){
       var html = '<form class="form-horizontal">'+
                     '<div class="control-group">'+
-                      '<label class="control-label" for="inputEmail">title</label>'+
+                      '<label class="control-label" for="inputTitle">title</label>'+
                       '<div class="controls">'+
-                        '<input type="text" id="inputEmail" name="title" isMust="must" placeholder="title">'+
+                        '<input type="text" id="inputTitle" name="title" isMust="must" placeholder="title">'+
                       '</div>'+
                     '</div>'+
                     '<div class="control-group">'+
@@ -836,23 +839,25 @@
                         '<input type="text"  readOnly id="version" name="version" placeholder="1.3.0.1">'+
                       '</div>'+
                     '</div>'+
-                    '<div class="control-group">'+
-                      '<label class="control-label" for="gitversion">gitversion</label>'+
-                      '<div class="controls">'+
-                        '<input type="text" id="gitversion" name="gitversion" placeholder="PI-1.3.0.1">'+
-                      '</div>'+
-                    '</div>'+
+                    // '<div class="control-group">'+
+                    //   '<label class="control-label" for="gitversion">gitversion</label>'+
+                    //   '<div class="controls">'+
+                    //     '<input type="text" id="description" name="description" placeholder="[bug]63221">'+
+                    //   '</div>'+
+                    // '</div>'+
                     '<div class="control-group">'+
                       '<label class="control-label" for="testlevel"><p>测试级别:</p></label>'+
                       '<div class="controls">'+
-                        '<input type="text" id="testlevel" name="testlevel" value="C" placeholder="C">'+
+                        '<select id="testlevel" name="testlevel" >'+
+                          '<option value="A - 前后端完整测试" selected="selected">A - 前后端完整测试</option><option value="B - 前端测试">B - 前端测试</option><option value="C - FE自测">C - FE自测</option>'+
+                        '</select>'+
                       '</div>'+
                     '</div>'+
-                    // '<div class="control-group">'+
-                    //   '<label class="control-label" for="inputContent">content:</label>'+
-                    //   '<div class="controls">'+
-                    //     '<textarea id="inputContent" rows="3">{{template}}</textarea>'+
-                    //   '</div>'+
+                    '<div class="control-group">'+
+                      '<label class="control-label" for="description">description:</label>'+
+                      '<div class="controls">'+
+                        '<textarea id="description" name="description" rows="3" placeholder="[bug]000000"></textarea>'+
+                      '</div>'+
                     '</div>'+
                     '<div class="control-group">'+
                     '<label class="control-label">收件人:</label>'+
@@ -901,8 +906,8 @@
       $('div[node-type="emailZone"]').html(html).show();
       if($('#show').find('input:checked').length==0){
         var arr = $('#show').html().split('<br>');
-        console.log(arr[arr.length-2])
-        $('#inputUrl').val(arr[arr.length-2]);
+        var tagname = arr[arr.length-2];
+        $('#inputUrl').val(tagname);
         if(arr[arr.length-2] =='failed'){
           if(confirm('打包错误，请刷新页面后重试。')){
             window.location.reload(true);
@@ -910,8 +915,11 @@
         }
       }else{
         $('#inputUrl').val($('#show').find('input:checked').val());
+        var tagname = $('#show').find('input:checked').val();
+        $('#inputUrl').val(tagname);
       }
       $('#version').val($('#inputUrl').val().split('_')[1]);
+      $('#inputTitle').val('PI-'+$('#version').val()+'-请启动测试')
     }
 
     $('[node-type="emailZone"]').on('click', ' button', function(){
@@ -920,7 +928,6 @@
       }
       startCommand($(this));
       var data = $('[node-type="emailZone"] form').serializeArray();
-      console.log(data);
       socket.emit('sendmail', data)
     });
 

@@ -6,8 +6,16 @@ var mailConfig = {
 		pass: "ria.litb"
 	}
 }
-var smtpTransport = nodemailer.createTransport("SMTP", mailConfig);
-
+// var smtpTransport = nodemailer.createTransport("SMTP", mailConfig);
+var smtpTransport = nodemailer.createTransport("SMTP",{
+	host: "smtp.exmail.qq.com", // hostname
+	secureConnection: true, // use SSL
+	port: 465, // port for secure SMTP
+	auth: {
+		user: "release_delivery@lightinthebox.com",
+		pass: "asc1234"
+	}
+})
 // setup e-mail data with unicode symbols
 
 
@@ -17,8 +25,9 @@ var sendmail = function(options, cb){
 	smtpTransport.sendMail(options, function(error, response){
 	    if(error){
 	        console.log(error);
+	        cb(error,false);
 	    }else{
-	        cb("Message sent: " + response.message);
+	        cb("Message sent: " + response.message,true);
 	    }
 	    smtpTransport.close();
 	    // if you don't want to use this transport object anymore, uncomment following line
