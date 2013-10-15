@@ -76,7 +76,7 @@ io.sockets.on('connection', function (socket) {
 
       last.on('close', function (code) {
         socket.emit('packager_over',{
-          'mailcontact' : mailConfig.contacts,
+          'maillist' : mailConfig.contacts,
           'template' : mailConfig.template,
           'type' : data.type
         })
