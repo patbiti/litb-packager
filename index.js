@@ -9,7 +9,8 @@ var app = require('express')()
   , Mustache = require('mustache')
   , crypto = require('crypto')
   , mailConfig
-  , last;
+  , last
+  , isPacking;
 
 
 var md5sum = function(path, key){
@@ -42,6 +43,8 @@ app.get('/', function (req, res) {
 });
 
 
+//upload to be finished;
+
 
 io.sockets.on('connection', function (socket) {
   function show_exit(code, actionType){
@@ -56,6 +59,7 @@ io.sockets.on('connection', function (socket) {
   }
 
   socket.on('packager', function(data){
+    isPacking = true;
     var actionType = 'git action: '+ data.type || '';
     if(data.type == 0){
       var existFile = fs.readdirSync(dirConfig['download-dir']);
@@ -66,6 +70,7 @@ io.sockets.on('connection', function (socket) {
         'type' : data.type
       })
       show_exit(0, actionType);
+      isPacking = false;
     }else{
       var command = 'sh ' + __dirname + '/batch/packager.sh ' + data.branch + ' ' + data.packagerno + ' ' + '' || data.comments;
       last = exec(command);
@@ -80,11 +85,24 @@ io.sockets.on('connection', function (socket) {
           'template' : mailConfig.template,
           'type' : data.type
         })
+        isPacking = false;
         show_exit(code, actionType);
       });
     }
     
   });
+
+  socket.on('isPacking', function(data){
+    if(isPacking && isPacking === true){
+        socket.emit('checkPacking',{
+          'flag' : false
+        })
+    }else{
+        socket.emit('checkPacking',{
+          'flag' : true
+        })
+    }
+  })
 
   socket.on('sendmail', function(arr){
     var data = {};
