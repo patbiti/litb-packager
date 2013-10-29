@@ -736,6 +736,19 @@
       }
       return true;
     }
+    var checkPackingCb;
+    var checkPacking = function(cb){
+      socket.emit('isPacking',{'data':''});
+      checkPackingCb = cb;
+    }
+
+    socket.on('checkPacking',function(result){
+      if(result.flag && result.flag == true){
+        checkPackingCb();
+      }else{
+        alert('系统正在打包，请稍后');
+      }
+    })
 
     var beatify = function(data){
       return data.replace(/\n/g, "<br />");
@@ -754,12 +767,16 @@
     if(!checkMust(packZone)){
       return false;
     }
-    startCommand($(this));
-    var data = {};
-    data['type'] = packZone.find('input[name="packtype"]:checked').val();
-    data['branch'] = $.trim(packZone.find('[name="branch"]').val());
-    data['packagerno'] = $.trim(packZone.find('[name="packagerno"]').val());
-    socket.emit('packager', data)
+    var packThis = $(this);
+    var packgerAction = function(){
+      startCommand(packThis);
+      var data = {};
+      data['type'] = packZone.find('input[name="packtype"]:checked').val();
+      data['branch'] = $.trim(packZone.find('[name="branch"]').val());
+      data['packagerno'] = $.trim(packZone.find('[name="packagerno"]').val());
+      socket.emit('packager', data)
+    }
+    checkPacking(packgerAction);
    });
 
    packZone.find('input[type="radio"]').click(function(){
