@@ -127,7 +127,7 @@ io.sockets.on('connection', function (socket) {
       var mailOptions = {
           from: "release_delivery 自动发版系统 <release_delivery@lightinthebox.com>", // sender address
           to: data.contacts, // list of receivers
-          bcc : 'litb.ria@gmail.com',
+          bcc : 'litb.ria@gmail.com,litb_ui@lightinthebox.com',
           subject: data.title, // Subject line
           text: "", // plaintext body
           html: html // html body,
@@ -136,7 +136,12 @@ io.sockets.on('connection', function (socket) {
         show_exit(flag, value);
       });
     }
-
+    //init AB测试组
+    if(data.isAB && data.isAB == '1'){
+      data.abcomment = {
+        'comment' : data.abDescription
+      }
+    }
     getMd5sumByshell(filepath, md5Cb);
     
   });
