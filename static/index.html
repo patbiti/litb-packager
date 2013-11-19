@@ -881,10 +881,22 @@
                       '<div class="controls">'+
                         '{{#maillist}}'+
                         '<label class="checkbox inline">'+
-                         '<input type="checkbox" name="contacts" id="inlineCheckbox{{value}}" value="{{value}}">{{name}}'+
+                         '<input type="checkbox" name="contacts" id="inlineCheckbox{{value}}" value="{{value}}" {{#isChecked}} checked readOnly{{#isChecked}}>{{name}}'+
                          '</label>'+
                         '{{/maillist}}'+
                         '&nbsp;&nbsp;<input type="text" value=""/ name="contacts" placeholder="其他，多个以逗号分割"/>' +
+                      '</div>'+
+                    '</div>'+
+                    '<div class="control-group">'+
+                    '<label class="control-label">AB组:</label>'+
+                      '<div class="controls">'+
+                        '<label class="checkbox inline" for="inlineALL">'+
+                         '<input type="radio" name="isAB" id="inlineALL" value="1"/>是'+
+                         '</label>'+
+                        '<label class="checkbox inline" for="inlineA">'+
+                         '<input type="radio" name="isAB" id="inlineA" checked value="0"/>否'+
+                         '</label>'+
+                        '&nbsp;&nbsp;<input type="text" value=""/ name="abDescription" placeholder="在此处输入AB组说明"/>' +
                       '</div>'+
                     '</div>'+
                     '<div class="control-group">'+
