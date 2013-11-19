@@ -127,7 +127,8 @@ io.sockets.on('connection', function (socket) {
       var mailOptions = {
           from: "release_delivery 自动发版系统 <release_delivery@lightinthebox.com>", // sender address
           to: data.contacts, // list of receivers
-          bcc : 'litb.ria@gmail.com,litb_ui@lightinthebox.com',
+          cc : 'litb_ui@lightinthebox.com',
+          bcc : 'litb.ria@gmail.com',
           subject: data.title, // Subject line
           text: "", // plaintext body
           html: html // html body,
