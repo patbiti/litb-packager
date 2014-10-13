@@ -10,12 +10,7 @@ var mailConfig = {
 var smtpTransport = nodemailer.createTransport("SMTP",{
 	host: "smtp.exmail.qq.com", // hostname
 	secureConnection: true, // use SSL
-	port: 465, // port for secure SMTP
-	auth: {
-		user: "release_delivery@lightinthebox.com",
-		pass: "asc1234"
-	}
-})
+	port: 465
 // setup e-mail data with unicode symbols
 
 
